@@ -16,16 +16,21 @@ class NetworkInfo {
 
   static void checkConnectivity(BuildContext context) {
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-
-      if (Provider.of<SplashProvider>(context, listen: false).firstTimeConnectionCheck) {
-        Provider.of<SplashProvider>(context, listen: false).setFirstTimeConnectionCheck(false);
+      if (Provider.of<SplashProvider>(context, listen: false)
+          .firstTimeConnectionCheck) {
+        Provider.of<SplashProvider>(context, listen: false)
+            .setFirstTimeConnectionCheck(false);
       } else {
         bool isNotConnected = result == ConnectivityResult.none;
-        isNotConnected ? const SizedBox() : showCustomSnackBar(isNotConnected ? 'no_connection'.tr : 'connected'.tr,isError: isNotConnected);
+        isNotConnected
+            ? const SizedBox()
+            : showCustomSnackBar(
+                isNotConnected ? 'no_connection'.tr : 'connected'.tr,
+                isError: isNotConnected);
 
         /*ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: isNotConnected ? Colors.red : Colors.green,
+          backgroundColor: isNotConnected ? Colors.red : Colors.red,
           duration: Duration(seconds: isNotConnected ? 6000 : 3),
           content: Text(
             isNotConnected ? getTranslated('no_connection', context) : getTranslated('connected', context),

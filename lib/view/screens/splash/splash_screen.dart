@@ -37,10 +37,15 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
 
     bool firstTime = true;
-    _onConnectivityChanged = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-      if(!firstTime) {
-        bool isNotConnected = result != ConnectivityResult.wifi && result != ConnectivityResult.mobile;
-        isNotConnected ? const SizedBox() : ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    _onConnectivityChanged = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) {
+      if (!firstTime) {
+        bool isNotConnected = result != ConnectivityResult.wifi &&
+            result != ConnectivityResult.mobile;
+        isNotConnected
+            ? const SizedBox()
+            : ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: isNotConnected ? Colors.red : Colors.green,
           duration: Duration(seconds: isNotConnected ? 6000 : 3),
@@ -49,7 +54,7 @@ class _SplashScreenState extends State<SplashScreen> {
             textAlign: TextAlign.center,
           ),
         ));
-        if(!isNotConnected) {
+        if (!isNotConnected) {
           _route();
         }
       }
@@ -63,33 +68,60 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _route() {
     // Provider.of<SplashProvider>(context, listen: false).removeSharedData();
-    Provider.of<SplashProvider>(context, listen: false).initConfig().then((bool isSuccess) {
+    Provider.of<SplashProvider>(context, listen: false)
+        .initConfig()
+        .then((bool isSuccess) {
       if (isSuccess) {
         Timer(const Duration(seconds: 1), () async {
           double minimumVersion = 0.0;
-          if(Platform.isAndroid) {
-            if(Provider.of<SplashProvider>(context, listen: false).configModel!.playStoreConfig!.minVersion!=null){
-              minimumVersion = Provider.of<SplashProvider>(context, listen: false).configModel!.playStoreConfig!.minVersion?? 6.0;
-
+          if (Platform.isAndroid) {
+            if (Provider.of<SplashProvider>(context, listen: false)
+                    .configModel!
+                    .playStoreConfig!
+                    .minVersion !=
+                null) {
+              minimumVersion =
+                  Provider.of<SplashProvider>(context, listen: false)
+                          .configModel!
+                          .playStoreConfig!
+                          .minVersion ??
+                      6.0;
             }
-          }else if(Platform.isIOS) {
-            if(Provider.of<SplashProvider>(context, listen: false).configModel!.appStoreConfig!.minVersion!=null){
-              minimumVersion = Provider.of<SplashProvider>(context, listen: false).configModel!.appStoreConfig!.minVersion?? 6.0;
+          } else if (Platform.isIOS) {
+            if (Provider.of<SplashProvider>(context, listen: false)
+                    .configModel!
+                    .appStoreConfig!
+                    .minVersion !=
+                null) {
+              minimumVersion =
+                  Provider.of<SplashProvider>(context, listen: false)
+                          .configModel!
+                          .appStoreConfig!
+                          .minVersion ??
+                      6.0;
             }
           }
-          if(AppConstants.appVersion < minimumVersion && !ResponsiveHelper.isWeb()) {
-            Navigator.pushNamedAndRemoveUntil(context, RouteHelper.getUpdateRoute(), (route) => false);
-          }
-          else{
-            if (Provider.of<AuthProvider>(context, listen: false).isLoggedIn()) {
+          if (AppConstants.appVersion < minimumVersion &&
+              !ResponsiveHelper.isWeb()) {
+            Navigator.pushNamedAndRemoveUntil(
+                context, RouteHelper.getUpdateRoute(), (route) => false);
+          } else {
+            if (Provider.of<AuthProvider>(context, listen: false)
+                .isLoggedIn()) {
               Provider.of<AuthProvider>(context, listen: false).updateToken();
-              Navigator.of(context).pushNamedAndRemoveUntil(RouteHelper.menu, (route) => false, arguments: const MenuScreen());
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  RouteHelper.menu, (route) => false,
+                  arguments: const MenuScreen());
             } else {
-              if(Provider.of<SplashProvider>(context, listen: false).showIntro()) {
-                Navigator.pushNamedAndRemoveUntil(context, RouteHelper.onBoarding, (route) => false, arguments: OnBoardingScreen());
-
-              }else {
-                Navigator.of(context).pushNamedAndRemoveUntil(RouteHelper.menu, (route) => false, arguments: const MenuScreen());
+              if (Provider.of<SplashProvider>(context, listen: false)
+                  .showIntro()) {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, RouteHelper.onBoarding, (route) => false,
+                    arguments: OnBoardingScreen());
+              } else {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    RouteHelper.menu, (route) => false,
+                    arguments: const MenuScreen());
               }
               // Navigator.pushNamedAndRemoveUntil(context, RouteHelper.onBoarding, (route) => false, arguments: OnBoardingScreen());
             }
@@ -108,7 +140,6 @@ class _SplashScreenState extends State<SplashScreen> {
         children: [
           Image.asset(Images.appLogo, height: 130, width: 500),
           const SizedBox(height: 30),
-
           Text(AppConstants.appName,
               textAlign: TextAlign.center,
               style: poppinsMedium.copyWith(

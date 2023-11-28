@@ -3,8 +3,8 @@ import 'package:flutter_grocery/helper/app_mode.dart';
 import 'images.dart';
 
 class AppConstants {
-  static const String appName = 'GroFresh';
-  static const double appVersion = 7.1;
+  static const String appName = 'Prestige';
+  static const double appVersion = 1.0;
   static const AppMode appMode = AppMode.release;
   static const String baseUrl = 'https://admin.sfbags.in';
   static const String configUri = '/api/v1/config';
@@ -100,7 +100,7 @@ class AppConstants {
   static const String userAddress = 'user_address';
 
   static const String searchAddress = 'search_address';
-  static const String topic = 'grofresh';
+  static const String topic = 'prestige';
   static const String onBoardingSkip = 'on_boarding_skip';
   static const String placeOrderData = 'place_order_data';
   static const String cookingManagement = 'cookies_management';
