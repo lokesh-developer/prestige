@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/category_model.dart';
 import 'package:flutter_grocery/data/model/response/language_model.dart';
@@ -32,7 +31,6 @@ import '../custom_text_field.dart';
 class WebAppBar extends StatefulWidget implements PreferredSizeWidget {
   const WebAppBar({Key? key}) : super(key: key);
 
-
   @override
   State<WebAppBar> createState() => _WebAppBarState();
 
@@ -43,44 +41,42 @@ class WebAppBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _WebAppBarState extends State<WebAppBar> {
   String? chooseLanguage;
-  
+
   List<PopupMenuEntry<Object>> popUpMenuList(BuildContext context) {
     List<PopupMenuEntry<Object>> list = <PopupMenuEntry<Object>>[];
-    List<CategoryModel>? categoryList =  Provider.of<CategoryProvider>(context, listen: false).categoryList;
-    list.add(
-        PopupMenuItem(
-          padding: const EdgeInsets.symmetric(horizontal: 5),
-          value: categoryList,
-          child: MouseRegion(
-            onExit: (_)=> Navigator.of(context).pop(),
-            child: CategoryHoverWidget(categoryList: categoryList),
-          ),
-        ));
+    List<CategoryModel>? categoryList =
+        Provider.of<CategoryProvider>(context, listen: false).categoryList;
+    list.add(PopupMenuItem(
+      padding: const EdgeInsets.symmetric(horizontal: 5),
+      value: categoryList,
+      child: MouseRegion(
+        onExit: (_) => Navigator.of(context).pop(),
+        child: CategoryHoverWidget(categoryList: categoryList),
+      ),
+    ));
     return list;
   }
 
   List<PopupMenuEntry<Object>> popUpLanguageList(BuildContext context) {
-    List<PopupMenuEntry<Object>> languagePopupMenuEntryList = <PopupMenuEntry<Object>>[];
-    List<LanguageModel> languageList =  AppConstants.languages;
-    languagePopupMenuEntryList.add(
-        PopupMenuItem(
-          padding: EdgeInsets.zero,
-          value: languageList,
-          child: MouseRegion(
-            onExit: (_)=> Navigator.of(context).pop(),
-            child: LanguageHoverWidget(languageList: languageList),
-          ),
-        ));
+    List<PopupMenuEntry<Object>> languagePopupMenuEntryList =
+        <PopupMenuEntry<Object>>[];
+    List<LanguageModel> languageList = AppConstants.languages;
+    languagePopupMenuEntryList.add(PopupMenuItem(
+      padding: EdgeInsets.zero,
+      value: languageList,
+      child: MouseRegion(
+        onExit: (_) => Navigator.of(context).pop(),
+        child: LanguageHoverWidget(languageList: languageList),
+      ),
+    ));
     return languagePopupMenuEntryList;
   }
 
   _showPopupMenu(Offset offset, BuildContext context, bool isCategory) async {
     double left = offset.dx;
     double top = offset.dy;
-    final RenderBox overlay = Overlay
-        .of(context)
-        .context
-        .findRenderObject() as RenderBox;
+    final RenderBox overlay =
+        Overlay.of(context).context.findRenderObject() as RenderBox;
     await showMenu(
       context: context,
       position: RelativeRect.fromLTRB(
@@ -92,84 +88,111 @@ class _WebAppBarState extends State<WebAppBar> {
           Radius.circular(12),
         ),
       ),
-
     );
   }
 
   @override
   void initState() {
-
     // _loadData(context, true);
 
     super.initState();
   }
 
-    @override
+  @override
   Widget build(BuildContext context) {
-    final ThemeProvider themeProvider =  Provider.of<ThemeProvider>(context, listen: false);
-    Provider.of<LanguageProvider>(context, listen: false).initializeAllLanguages(context);
+    final ThemeProvider themeProvider =
+        Provider.of<ThemeProvider>(context, listen: false);
+    Provider.of<LanguageProvider>(context, listen: false)
+        .initializeAllLanguages(context);
 
-    LanguageModel currentLanguage = AppConstants.languages.firstWhere((language) => language.languageCode == Provider.of<LocalizationProvider>(context, listen: false).locale.languageCode);
+    LanguageModel currentLanguage = AppConstants.languages.firstWhere(
+        (language) =>
+            language.languageCode ==
+            Provider.of<LocalizationProvider>(context, listen: false)
+                .locale
+                .languageCode);
 
     return Container(
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.10),
-            blurRadius: 20,
-            offset: const Offset(0,10),
-          )
-        ]
-      ),
+      decoration: BoxDecoration(boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.10),
+          blurRadius: 20,
+          offset: const Offset(0, 10),
+        )
+      ]),
       child: Column(
         children: [
           Container(
             color: ColorResources.getAppBarHeaderColor(context),
             height: 45,
             child: Center(
-              child: SizedBox( width: 1170,
+              child: SizedBox(
+                width: 1170,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeExtraSmall),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: Dimensions.paddingSizeExtraSmall),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall),
-                        child: Text('dark_mode'.tr, style: poppinsRegular.copyWith(color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.6), fontSize: Dimensions.paddingSizeDefault)),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: Dimensions.paddingSizeExtraSmall),
+                        child: Text('dark_mode'.tr,
+                            style: poppinsRegular.copyWith(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge
+                                    ?.color
+                                    ?.withOpacity(0.6),
+                                fontSize: Dimensions.paddingSizeDefault)),
                       ),
                       // StatusWidget(),
                       Transform.scale(
                         scale: 1,
                         child: Switch(
-                          onChanged: (bool isActive) => themeProvider.toggleTheme(),
+                          onChanged: (bool isActive) =>
+                              themeProvider.toggleTheme(),
                           value: themeProvider.darkTheme,
                           activeColor: Colors.black26,
                           activeTrackColor: Colors.grey,
                           inactiveThumbColor: Colors.white,
                           inactiveTrackColor: Theme.of(context).primaryColor,
-
                         ),
                       ),
                       const SizedBox(width: Dimensions.paddingSizeSmall),
 
                       SizedBox(
                         height: Dimensions.paddingSizeLarge,
-
                         child: MouseRegion(
-                          onHover: (details){
+                          onHover: (details) {
                             _showPopupMenu(details.position, context, false);
                           },
                           child: InkWell(
-                            onTap: () => showAnimatedDialog(context, const CurrencyDialog()),
+                            onTap: () => showAnimatedDialog(
+                                context, const CurrencyDialog()),
                             // onTap: () => Navigator.pushNamed(context, RouteHelper.getLanguageRoute('menu')),
                             child: Row(
                               children: [
-                               Image.asset(Images.translateLogo, height: Dimensions.paddingSizeLarge, width: Dimensions.paddingSizeLarge),
-                               const SizedBox(width: Dimensions.paddingSizeSmall),
-                                Text('${currentLanguage.languageName}',style: poppinsRegular.copyWith(color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.6))),
-                                const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-                                Icon(Icons.expand_more, color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.6))
+                                Image.asset(Images.translateLogo,
+                                    height: Dimensions.paddingSizeLarge,
+                                    width: Dimensions.paddingSizeLarge),
+                                const SizedBox(
+                                    width: Dimensions.paddingSizeSmall),
+                                Text('${currentLanguage.languageName}',
+                                    style: poppinsRegular.copyWith(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge
+                                            ?.color
+                                            ?.withOpacity(0.6))),
+                                const SizedBox(
+                                    width: Dimensions.paddingSizeExtraSmall),
+                                Icon(Icons.expand_more,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge
+                                        ?.color
+                                        ?.withOpacity(0.6))
                               ],
                             ),
                           ),
@@ -177,35 +200,79 @@ class _WebAppBarState extends State<WebAppBar> {
                       ),
                       const SizedBox(width: Dimensions.paddingSizeExtraLarge),
 
-                      Consumer<AuthProvider>(builder: (context, authProvider, _) {
-                        return authProvider.isLoggedIn() ? InkWell(
-                          onTap: () => showDialog(context: context, barrierDismissible: false, builder: (context) => const SignOutConfirmationDialog()),
-                          child: Row(children: [
-                            Padding(padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall),
-                              child: Image.asset(Images.lock,height: 16,fit: BoxFit.contain, color: Theme.of(context).primaryColor),
-                            ),
-
-                            Padding(padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall),
-                              child: Text('log_out'.tr, style: poppinsRegular.copyWith(fontSize: Dimensions.fontSizeDefault, color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.6))),
-                            ),
-
-                          ],),
-                        ) : InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(context, RouteHelper.login);
-                          },
-                          child:  Row(children: [
-                            Padding(padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall),
-                              child: Image.asset(Images.lock,height: 16,fit: BoxFit.contain, color: Theme.of(context).primaryColor),
-                            ),
-                            Padding(padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall),
-                              child: Text('login'.tr, style: poppinsRegular.copyWith(fontSize: Dimensions.fontSizeDefault, color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.6))),
-                            ),
-                          ],
-                          ),
-                        );
+                      Consumer<AuthProvider>(
+                          builder: (context, authProvider, _) {
+                        return authProvider.isLoggedIn()
+                            ? InkWell(
+                                onTap: () => showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (context) =>
+                                        const SignOutConfirmationDialog()),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal:
+                                              Dimensions.paddingSizeExtraSmall),
+                                      child: Image.asset(Images.lock,
+                                          height: 16,
+                                          fit: BoxFit.contain,
+                                          color:
+                                              Theme.of(context).primaryColor),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal:
+                                              Dimensions.paddingSizeExtraSmall),
+                                      child: Text('log_out'.tr,
+                                          style: poppinsRegular.copyWith(
+                                              fontSize:
+                                                  Dimensions.fontSizeDefault,
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyLarge
+                                                  ?.color
+                                                  ?.withOpacity(0.6))),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, RouteHelper.login);
+                                },
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal:
+                                              Dimensions.paddingSizeExtraSmall),
+                                      child: Image.asset(Images.lock,
+                                          height: 16,
+                                          fit: BoxFit.contain,
+                                          color:
+                                              Theme.of(context).primaryColor),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal:
+                                              Dimensions.paddingSizeExtraSmall),
+                                      child: Text('login'.tr,
+                                          style: poppinsRegular.copyWith(
+                                              fontSize:
+                                                  Dimensions.fontSizeDefault,
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyLarge
+                                                  ?.color
+                                                  ?.withOpacity(0.6))),
+                                    ),
+                                  ],
+                                ),
+                              );
                       }),
-
                     ],
                   ),
                 ),
@@ -213,7 +280,8 @@ class _WebAppBarState extends State<WebAppBar> {
             ),
           ),
           Expanded(
-            child: Container(color: Theme.of(context).cardColor,
+            child: Container(
+              color: Theme.of(context).cardColor,
               child: Center(
                 child: SizedBox(
                     width: 1170,
@@ -221,185 +289,267 @@ class _WebAppBarState extends State<WebAppBar> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Row(children: [
-                          InkWell(
-                            onTap: () {
-                              Provider.of<ProductProvider>(context, listen: false).offset = 1;
-                              if(ModalRoute.of(context)!.settings.name != RouteHelper.getMainRoute()) {
-                                Navigator.pushNamed(context, RouteHelper.getMainRoute());
-                              }
-                            },
-                            child: Row(
-                              children: [
-                                SizedBox(height: 50,
-                                    child: Consumer<SplashProvider>(
-                                      builder:(context, splash, child) => FadeInImage.assetNetwork(
-                                        placeholder: Images.appLogo,
-                                        image: splash.baseUrls != null ? '${splash.baseUrls!.ecommerceImageUrl}/${splash.configModel!.ecommerceLogo}' : '',fit: BoxFit.contain,
-                                        imageErrorBuilder: (c,b,v)=> Image.asset(Images.appLogo),
-                                      ),
-                                    ) ),
-                                const SizedBox(width: Dimensions.paddingSizeSmall),
-                              ],
-                            ),
-                          ),
-
-                          const SizedBox(width: 40),
-
-                          TextHover(builder: (isHovered) {
-                            return InkWell(
+                        Row(
+                          children: [
+                            InkWell(
                               onTap: () {
-                                Provider.of<ProductProvider>(context, listen: false).offset = 1;
-                                if(ModalRoute.of(context)!.settings.name != RouteHelper.getMainRoute()) {
-                                  Navigator.pushNamed(context, RouteHelper.getMainRoute());
+                                Provider.of<ProductProvider>(context,
+                                        listen: false)
+                                    .offset = 1;
+                                if (ModalRoute.of(context)!.settings.name !=
+                                    RouteHelper.getMainRoute()) {
+                                  Navigator.pushNamed(
+                                      context, RouteHelper.getMainRoute());
                                 }
                               },
-                              child: Text('home'.tr, style: isHovered ?
-                              poppinsSemiBold.copyWith(color: Theme.of(context).primaryColor,
-                                  fontSize: Dimensions.fontSizeLarge) :
-                              poppinsMedium.copyWith(color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.6),
-                                  fontSize: Dimensions.fontSizeLarge)),
-                            );
-                          }),
-                          const SizedBox(width: 40),
-
-
-
-                          TextHover(
-                            builder: (isHovered) {
-                              return MouseRegion(onHover: (details){
-                                if(Provider.of<CategoryProvider>(context, listen: false).categoryList != null){
-                                  _showPopupMenu(details.position, context,true);
-                                }
-
-                              },
-                                child: Text('categories'.tr,
-                                    style: isHovered ? poppinsSemiBold.copyWith(color: Theme.of(context).primaryColor,
-                                        fontSize: Dimensions.fontSizeLarge) :
-                                    poppinsMedium.copyWith(color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.6),
-                                        fontSize: Dimensions.fontSizeLarge)
-                                ),);
-                            },),
-                          const SizedBox(width: 40),
-
-
-                          TextHover(
-                              builder: (isHovered) {
-                                return InkWell(
-                                    onTap: () => Navigator.pushNamed(context, RouteHelper.favorite),
-                                    child: SizedBox(
-                                      width: 120,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-                                        child: Text('favourite'.tr, maxLines: 1,overflow: TextOverflow.ellipsis,
-                                            style: isHovered ? poppinsSemiBold.copyWith(color: Theme.of(context).primaryColor,
-                                                fontSize: Dimensions.fontSizeLarge) :
-                                            poppinsMedium.copyWith(color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.6),
-                                                fontSize: Dimensions.fontSizeLarge)
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                      height: 50,
+                                      child: Consumer<SplashProvider>(
+                                        builder: (context, splash, child) =>
+                                            FadeInImage.assetNetwork(
+                                          placeholder: Images.appLogo,
+                                          image: splash.baseUrls != null
+                                              ? '${splash.baseUrls!.ecommerceImageUrl}/${splash.configModel!.ecommerceLogo}'
+                                              : '',
+                                          fit: BoxFit.contain,
+                                          imageErrorBuilder: (c, b, v) =>
+                                              Image.asset(Images.appLogo),
                                         ),
-                                      ),
-                                    ));
-                              }
-                          ),
-                        ],),
-
-
-
-
-
-                        Row(children: [
-                          Container(
-                            width: 400,
-                            decoration: BoxDecoration(
-                              color:  Theme.of(context).textTheme.titleLarge?.color?.withOpacity(
-                                themeProvider.darkTheme ? 0.2 :   0.8,
+                                      )),
+                                  const SizedBox(
+                                      width: Dimensions.paddingSizeSmall),
+                                ],
                               ),
-                              borderRadius: BorderRadius.circular(Dimensions.radiusSizeDefault),
                             ),
-                            padding: const EdgeInsets.symmetric(horizontal: 0,vertical: 2),
-                            child: Consumer<SearchProvider>(
-                                builder: (context,search,_) {
-                                  return CustomTextField(
-                                    hintText: 'searchItem_here'.tr,
-                                    isShowBorder: false,
-                                    fillColor: Colors.transparent,
-                                    isElevation: false,
-                                    isShowSuffixIcon: true,
-
-                                    suffixAssetUrl: !search.isSearch ? Images.close : Images.search,
-                                    onChanged: (str){
-                                      str.length = 0;
-                                      search.getSearchText(str);
-                                      },
-
-                                    onSuffixTap: () {
-                                      if(search.searchController.text.isNotEmpty && search.isSearch == true){
-
-                                        Navigator.pushNamed(context, RouteHelper.getSearchResultRoute(search.searchController.text),
-                                            arguments: SearchResultScreen(searchString: search.searchController.text));
-                                        search.searchDone();
-                                      }
-                                      else if (search.searchController.text.isNotEmpty && search.isSearch == false) {
-                                        search.searchController.clear();
-                                        search.getSearchText('');
-                                        search.searchDone();
-                                      }
-                                    },
-                                    controller: search.searchController,
-                                    inputAction: TextInputAction.search,
-                                    isIcon: true,
-                                    onSubmit: (text) {
-                                      if (search.searchController.text.isNotEmpty) {
-
-                                        Navigator.pushNamed(context, RouteHelper.getSearchResultRoute(search.searchController.text));
-
-                                        search.searchDone();
-                                      }
-
-                                    },);
-                                }
+                            const SizedBox(width: 40),
+                            TextHover(builder: (isHovered) {
+                              return InkWell(
+                                onTap: () {
+                                  Provider.of<ProductProvider>(context,
+                                          listen: false)
+                                      .offset = 1;
+                                  if (ModalRoute.of(context)!.settings.name !=
+                                      RouteHelper.getMainRoute()) {
+                                    Navigator.pushNamed(
+                                        context, RouteHelper.getMainRoute());
+                                  }
+                                },
+                                child: Text('home'.tr,
+                                    style: isHovered
+                                        ? poppinsSemiBold.copyWith(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            fontSize: Dimensions.fontSizeLarge)
+                                        : poppinsMedium.copyWith(
+                                            color: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge
+                                                ?.color
+                                                ?.withOpacity(0.6),
+                                            fontSize:
+                                                Dimensions.fontSizeLarge)),
+                              );
+                            }),
+                            const SizedBox(width: 40),
+                            TextHover(
+                              builder: (isHovered) {
+                                return MouseRegion(
+                                  onHover: (details) {
+                                    if (Provider.of<CategoryProvider>(context,
+                                                listen: false)
+                                            .categoryList !=
+                                        null) {
+                                      _showPopupMenu(
+                                          details.position, context, true);
+                                    }
+                                  },
+                                  child: Text('categories'.tr,
+                                      style: isHovered
+                                          ? poppinsSemiBold.copyWith(
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                              fontSize:
+                                                  Dimensions.fontSizeLarge)
+                                          : poppinsMedium.copyWith(
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyLarge
+                                                  ?.color
+                                                  ?.withOpacity(0.6),
+                                              fontSize:
+                                                  Dimensions.fontSizeLarge)),
+                                );
+                              },
                             ),
-                          ),
-                          const SizedBox(width: 40),
+                            const SizedBox(width: 40),
+                            TextHover(builder: (isHovered) {
+                              return InkWell(
+                                  onTap: () => Navigator.pushNamed(
+                                      context, RouteHelper.favorite),
+                                  child: SizedBox(
+                                    width: 120,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal:
+                                              Dimensions.paddingSizeDefault),
+                                      child: Text('favourite'.tr,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: isHovered
+                                              ? poppinsSemiBold.copyWith(
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                  fontSize:
+                                                      Dimensions.fontSizeLarge)
+                                              : poppinsMedium.copyWith(
+                                                  color: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyLarge
+                                                      ?.color
+                                                      ?.withOpacity(0.6),
+                                                  fontSize: Dimensions
+                                                      .fontSizeLarge)),
+                                    ),
+                                  ));
+                            }),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              width: 400,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .titleLarge
+                                    ?.color
+                                    ?.withOpacity(
+                                      themeProvider.darkTheme ? 0.2 : 0.8,
+                                    ),
+                                borderRadius: BorderRadius.circular(
+                                    Dimensions.radiusSizeDefault),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 0, vertical: 2),
+                              child: Consumer<SearchProvider>(
+                                  builder: (context, search, _) {
+                                return CustomTextField(
+                                  hintText: 'searchItem_here'.tr,
+                                  isShowBorder: false,
+                                  fillColor: Colors.transparent,
+                                  isElevation: false,
+                                  isShowSuffixIcon: true,
+                                  suffixAssetUrl: !search.isSearch
+                                      ? Images.close
+                                      : Images.search,
+                                  onChanged: (str) {
+                                    str.length = 0;
+                                    search.getSearchText(str);
+                                  },
+                                  onSuffixTap: () {
+                                    if (search
+                                            .searchController.text.isNotEmpty &&
+                                        search.isSearch == true) {
+                                      Navigator.pushNamed(
+                                          context,
+                                          RouteHelper.getSearchResultRoute(
+                                              search.searchController.text),
+                                          arguments: SearchResultScreen(
+                                              searchString: search
+                                                  .searchController.text));
+                                      search.searchDone();
+                                    } else if (search
+                                            .searchController.text.isNotEmpty &&
+                                        search.isSearch == false) {
+                                      search.searchController.clear();
+                                      search.getSearchText('');
+                                      search.searchDone();
+                                    }
+                                  },
+                                  controller: search.searchController,
+                                  inputAction: TextInputAction.search,
+                                  isIcon: true,
+                                  onSubmit: (text) {
+                                    if (search
+                                        .searchController.text.isNotEmpty) {
+                                      Navigator.pushNamed(
+                                          context,
+                                          RouteHelper.getSearchResultRoute(
+                                              search.searchController.text));
 
-                          InkWell(
-                            onTap: (){
-                              Navigator.pushNamed(context, RouteHelper.cart);
-                            },
-                            child: SizedBox(
-                              child: Stack(
-                                clipBehavior: Clip.none, children: [
-                                SizedBox(
-                                    height: 30,width: 30,
-                                    child: Image.asset(Images.shoppingCartBold,color: Theme.of(context).primaryColor)
+                                      search.searchDone();
+                                    }
+                                  },
+                                );
+                              }),
+                            ),
+                            const SizedBox(width: 40),
+                            InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(context, RouteHelper.cart);
+                              },
+                              child: SizedBox(
+                                child: Stack(
+                                  clipBehavior: Clip.none,
+                                  children: [
+                                    SizedBox(
+                                        height: 30,
+                                        width: 30,
+                                        child: Image.asset(
+                                            Images.shoppingCartBold,
+                                            color: Theme.of(context)
+                                                .primaryColor)),
+                                    Consumer<CartProvider>(
+                                        builder: (context, cartProvider, _) =>
+                                            Positioned(
+                                                top: -10,
+                                                right: -10,
+                                                child: int.parse(cartProvider
+                                                            .cartList.length
+                                                            .toString()) <=
+                                                        0
+                                                    ? const SizedBox()
+                                                    : Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .error,
+                                                        ),
+                                                        padding: const EdgeInsets
+                                                            .all(Dimensions
+                                                                .paddingSizeExtraSmall),
+                                                        child: Text(
+                                                            '${cartProvider.cartList.length}',
+                                                            style: poppinsRegular
+                                                                .copyWith(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        Dimensions
+                                                                            .fontSizeSmall)),
+                                                      ))),
+                                  ],
                                 ),
-                                Consumer<CartProvider>(builder: (context, cartProvider, _) => Positioned(
-                                    top: -10,
-                                    right: -10,
-                                    child: int.parse(cartProvider.cartList.length.toString()) <=0 ? const SizedBox() : Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Theme.of(context).colorScheme.error,
-                                      ),
-                                      padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
-                                      child: Text('${cartProvider.cartList.length}',style: poppinsRegular.copyWith(color: Colors.white,fontSize: Dimensions.fontSizeSmall)),
-                                    ))),
-                              ],
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 40),
-
-                          IconButton(onPressed: () => Navigator.pushNamed(context, RouteHelper.profileMenus),
-                              icon: Icon(Icons.menu,size: Dimensions.fontSizeOverLarge, color: Theme.of(context).primaryColor)),
-                          const SizedBox(width: Dimensions.paddingSizeSmall)
-                        ],)
-
-
-
+                            const SizedBox(width: 40),
+                            IconButton(
+                                onPressed: () => Navigator.pushNamed(
+                                    context, RouteHelper.profileMenus),
+                                icon: Icon(Icons.menu,
+                                    size: Dimensions.fontSizeOverLarge,
+                                    color: Theme.of(context).primaryColor)),
+                            const SizedBox(width: Dimensions.paddingSizeSmall)
+                          ],
+                        )
                       ],
-                    )
-                ),
+                    )),
               ),
             ),
           ),
@@ -410,4 +560,3 @@ class _WebAppBarState extends State<WebAppBar> {
 
   Size get preferredSize => const Size(double.maxFinite, 160);
 }
-

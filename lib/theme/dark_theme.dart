@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 ThemeData dark = ThemeData(
-  fontFamily: 'Poppins',
+  fontFamily: 'Lato Regular',
   primaryColor: Color.fromARGB(255, 202, 130, 170),
   brightness: Brightness.dark,
   scaffoldBackgroundColor: const Color(0xFF2C2C2C),
