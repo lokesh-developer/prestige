@@ -6,7 +6,7 @@ class AppConstants {
   static const String appName = 'Prestige';
   static const double appVersion = 1.0;
   static const AppMode appMode = AppMode.release;
-  static const String baseUrl = 'https://admin.sfbags.in';
+  static const String baseUrl = 'https://admin.prestigeeshop.com';
   static const String configUri = '/api/v1/config';
   static const String bannerUri = '/api/v1/banners';
   static const String categoryUri = '/api/v1/categories';
